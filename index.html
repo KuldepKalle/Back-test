@@ -1,0 +1,463 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.dash{padding:.75rem 0;font-family:var(--font-sans);color:var(--color-text-primary)}
+.panel{background:var(--color-background-secondary);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem}
+.panel-title{font-size:10px;letter-spacing:.08em;font-weight:500;color:var(--color-text-secondary);margin-bottom:.85rem;text-transform:uppercase}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:12px;color:var(--color-text-secondary)}
+select{border-radius:6px;border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);padding:6px 10px;font-size:13px;cursor:pointer;min-width:220px}
+.pbg{display:flex;gap:3px;flex-wrap:wrap}
+.pb{padding:5px 10px;font-size:12px;border-radius:6px;border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
+.pb.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.pb:hover:not(.active){background:var(--color-background-secondary)}
+.cdt{display:none;flex-direction:column;gap:4px}
+.cdt label{font-size:12px;color:var(--color-text-secondary)}
+.cdt-row{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--color-text-secondary)}
+input[type=date]{border-radius:6px;border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);padding:5px 8px;font-size:12px}
+#run-btn{padding:7px 18px;border-radius:6px;border:.5px solid var(--color-border-secondary);background:var(--color-text-primary);color:var(--color-background-primary);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap}
+#run-btn:hover{opacity:.85}
+#run-btn:disabled{opacity:.4;cursor:not-allowed}
+.stbar{font-size:12px;padding:.4rem 0;min-height:22px;color:var(--color-text-secondary)}
+.stbar.load{color:#185FA5}.stbar.ok{color:#1D9E75}.stbar.err{color:#D85A30}
+.src-note{font-size:12px;color:var(--color-text-secondary);background:var(--color-background-secondary);border-radius:8px;padding:.65rem 1rem;margin-bottom:1rem;line-height:1.8}
+.src-note strong{color:var(--color-text-primary);font-weight:500}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:1rem}
+.mc{background:var(--color-background-secondary);border-radius:8px;padding:.8rem 1rem}
+.ml{font-size:11px;color:var(--color-text-secondary);margin-bottom:3px}
+.mv{font-size:20px;font-weight:500}
+.mv.g{color:#1D9E75}.mv.r{color:#D85A30}.mv.b{color:#185FA5}
+.ins{border-left:3px solid #1D9E75;background:var(--color-background-secondary);border-radius:0 8px 8px 0;padding:.65rem 1rem;margin-bottom:1rem;font-size:13px;line-height:1.6}
+.ins strong{font-weight:500}
+.ins span{color:var(--color-text-secondary)}
+.cc{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:12px;padding:1rem;margin-bottom:.85rem}
+.ct{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:.7rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:.85rem}
+.g2 .cc{margin-bottom:0}
+.leg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;font-size:11px;color:var(--color-text-secondary)}
+.li{display:flex;align-items:center;gap:4px}
+.ls{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.tw{overflow-x:auto;max-height:300px;overflow-y:auto;border-radius:8px;border:.5px solid var(--color-border-tertiary)}
+.tt{width:100%;border-collapse:collapse;font-size:11.5px;min-width:700px}
+.tt th{position:sticky;top:0;background:var(--color-background-secondary);font-weight:500;font-size:10.5px;color:var(--color-text-secondary);padding:6px 10px;border-bottom:.5px solid var(--color-border-tertiary);text-align:left;white-space:nowrap}
+.tt td{padding:5px 10px;border-bottom:.5px solid var(--color-border-tertiary);white-space:nowrap}
+.bx{display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;font-weight:500}
+.bw{background:#EAF3DE;color:#3B6D11}.bl{background:#FAECE7;color:#993C1D}
+.bn{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.bb{background:#E6F1FB;color:#0C447C}.bs{background:#FAECE7;color:#993C1D}
+.bc{background:#EAF3DE;color:#3B6D11}
+</style>
+
+<div class="dash">
+
+<div class="panel">
+  <div class="panel-title">Strategy Backtester — XAUUSD</div>
+  <div class="row">
+    <div class="fg">
+      <label>Strategy</label>
+      <select id="strat-sel">
+        <option value="vwap_ema9">VWAP + EMA9 Crossover (XAUUSD Gold)</option>
+        <option value="__soon__" disabled>— More strategies coming soon —</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Period preset</label>
+      <div class="pbg">
+        <button class="pb" data-p="1m">1M</button>
+        <button class="pb" data-p="3m">3M</button>
+        <button class="pb active" data-p="6m">6M</button>
+        <button class="pb" data-p="1y">1Y</button>
+        <button class="pb" data-p="2y">2Y</button>
+        <button class="pb" data-p="custom">Custom ↓</button>
+      </div>
+    </div>
+    <div class="cdt" id="cdt">
+      <label>Custom date range</label>
+      <div class="cdt-row">
+        <input type="date" id="d-from">
+        <span>→</span>
+        <input type="date" id="d-to">
+      </div>
+    </div>
+    <button id="run-btn">▶ Run Backtest</button>
+  </div>
+</div>
+
+<div class="src-note">
+  <strong>Free data source:</strong> Live XAUUSD historical data from <strong>Yahoo Finance (GC=F)</strong> — no API key required. Supports up to 2 years of 1H candle data.
+  If live fetch is unavailable, <strong>synthetic demo data</strong> is used automatically so you can explore the dashboard.
+  For premium sources: <strong>Dukascopy</strong> · <strong>Twelve Data</strong> · <strong>Alpha Vantage</strong> (all have free tiers).
+</div>
+
+<div id="stbar" class="stbar">Select a period and click ▶ Run Backtest to begin.</div>
+
+<div id="results" style="display:none">
+  <div class="mgrid" id="mgrid"></div>
+  <div class="ins" id="ins"></div>
+
+  <div class="cc">
+    <div class="ct">Equity curve — cumulative PnL (points per trade)</div>
+    <div style="position:relative;height:190px"><canvas id="c-eq" role="img" aria-label="Equity curve showing cumulative PnL over all trades"></canvas></div>
+  </div>
+
+  <div class="g2">
+    <div class="cc">
+      <div class="ct">Result breakdown</div>
+      <div class="leg" id="dl"></div>
+      <div style="position:relative;height:195px"><canvas id="c-do" role="img" aria-label="Donut chart of trade result types"></canvas></div>
+    </div>
+    <div class="cc">
+      <div class="ct">Win rate by filter</div>
+      <div class="leg">
+        <span class="li"><span class="ls" style="background:#1D9E75"></span>Win %</span>
+        <span class="li"><span class="ls" style="background:#D85A30"></span>Loss %</span>
+      </div>
+      <div style="position:relative;height:195px"><canvas id="c-wr" role="img" aria-label="Stacked bar chart comparing win rates"></canvas></div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="ct">Monthly PnL (points)</div>
+    <div style="position:relative;height:160px"><canvas id="c-mo" role="img" aria-label="Monthly PnL bar chart"></canvas></div>
+  </div>
+
+  <div class="g2">
+    <div class="cc">
+      <div class="ct">BUY vs SELL win rate</div>
+      <div style="position:relative;height:130px"><canvas id="c-dir" role="img" aria-label="BUY vs SELL win rate"></canvas></div>
+    </div>
+    <div class="cc">
+      <div class="ct">PnL distribution (pts)</div>
+      <div style="position:relative;height:130px"><canvas id="c-dist" role="img" aria-label="PnL distribution histogram"></canvas></div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="ct">Trade log — <span id="tc">0</span> trades <span style="font-weight:400;font-size:11px;color:var(--color-text-secondary)">(scroll to view all)</span></div>
+    <div class="tw">
+      <table class="tt">
+        <thead><tr>
+          <th>#</th><th>Date</th><th>Dir</th><th>Entry</th>
+          <th>SL</th><th>TP1 1:2</th><th>TP2 1:3</th><th>Exit</th>
+          <th>Risk</th><th>PnL pts</th><th>RR</th><th>Result</th><th>4H ✓</th>
+        </tr></thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ══ INDICATOR ENGINE ══
+function calcEMA(v,p){const k=2/(p+1),o=[];v.forEach((x,i)=>o.push(i===0?x:x*k+o[i-1]*(1-k)));return o;}
+function calcVWAP(cs){const o=[];let cv=0,cTPV=0,ld='';cs.forEach(c=>{const d=new Date(c.t).toDateString();if(d!==ld){cv=0;cTPV=0;ld=d;}const tp=(c.h+c.l+c.c)/3;cTPV+=tp*c.v;cv+=c.v;o.push(cv>0?cTPV/cv:c.c);});return o;}
+function build4H(cs,p){const B={};cs.forEach(c=>{const d=new Date(c.t);d.setMinutes(0,0,0);d.setHours(Math.floor(d.getHours()/4)*4);const k=d.getTime();if(!B[k])B[k]=[];B[k].push(c);});const bars=Object.keys(B).sort((a,b)=>+a-+b).map(k=>{const a=B[k];return{t:+k,o:a[0].o,h:Math.max(...a.map(x=>x.h)),l:Math.min(...a.map(x=>x.l)),c:a[a.length-1].c,v:a.reduce((s,x)=>s+x.v,0)};});const e9=calcEMA(bars.map(b=>b.c),p),vw=calcVWAP(bars);bars.forEach((b,i)=>{b.e9=e9[i];b.vw=vw[i];});return bars;}
+function conf4H(bars,t,dir){let b=null;for(let i=bars.length-1;i>=0;i--){if(bars[i].t<=t){b=bars[i];break;}}if(!b)return false;return dir==='BUY'?b.c>b.vw&&b.c>b.e9:b.c<b.vw&&b.c<b.e9;}
+
+// ══ STRATEGY: VWAP + EMA9 ══
+function runVwapEma9(candles,P){
+  const {ep,sb,mnSL,mxSL,r1,r2,lf}=P;
+  const closes=candles.map(c=>c.c);
+  const ema=calcEMA(closes,ep),vwap=calcVWAP(candles);
+  const b4h=build4H(candles,ep);
+  const trades=[];
+  for(let i=1;i<candles.length-lf-1;i++){
+    const cur=candles[i],prv=candles[i-1];
+    const ce=ema[i],cv=vwap[i],pe=ema[i-1],pv=vwap[i-1];
+    const aB=cur.c>cv&&cur.c>ce,bB=cur.c<cv&&cur.c<ce;
+    const pA=prv.c>pv&&prv.c>pe,pBl=prv.c<pv&&prv.c<pe;
+    const isBuy=aB&&!pA,isSell=bB&&!pBl;
+    if(!isBuy&&!isSell)continue;
+    const dir=isBuy?'BUY':'SELL';
+    const c4=conf4H(b4h,cur.t,dir);
+    const nx=candles[i+1];if(!nx)continue;
+    const en=nx.o;
+    let sl,risk;
+    if(dir==='BUY'){sl=Math.min(cur.l,cv,ce)-sb;risk=en-sl;}
+    else{sl=Math.max(cur.h,cv,ce)+sb;risk=sl-en;}
+    if(risk<mnSL||risk>mxSL)continue;
+    const tp1=dir==='BUY'?en+r1*risk:en-r1*risk;
+    const tp2=dir==='BUY'?en+r2*risk:en-r2*risk;
+    let tsl=sl,res='TIMEOUT',ex=candles[Math.min(i+lf,candles.length-1)].c;
+    let ext=candles[Math.min(i+lf,candles.length-1)].t,mxR=0,be=false;
+    for(let j=i+1;j<Math.min(i+1+lf,candles.length);j++){
+      const f=candles[j];
+      if(dir==='BUY'){
+        mxR=Math.max(mxR,(f.h-en)/risk);
+        if(mxR>=1&&!be){tsl=Math.max(tsl,en);be=true;}
+        if(be){tsl=Math.max(tsl,f.h-risk);}
+        if(f.h>=tp2){ex=tp2;ext=f.t;res='TP2_1:3';break;}
+        if(f.h>=tp1){ex=tp1;ext=f.t;res='TP1_1:2';break;}
+        if(f.l<=tsl){ex=tsl;ext=f.t;res=!be?'SL_HIT':tsl===en?'TRAIL_BE':'TRAIL_PROFIT';break;}
+      }else{
+        mxR=Math.max(mxR,(en-f.l)/risk);
+        if(mxR>=1&&!be){tsl=Math.min(tsl,en);be=true;}
+        if(be){tsl=Math.min(tsl,f.l+risk);}
+        if(f.l<=tp2){ex=tp2;ext=f.t;res='TP2_1:3';break;}
+        if(f.l<=tp1){ex=tp1;ext=f.t;res='TP1_1:2';break;}
+        if(f.h>=tsl){ex=tsl;ext=f.t;res=!be?'SL_HIT':tsl===en?'TRAIL_BE':'TRAIL_PROFIT';break;}
+      }
+    }
+    const pnl=dir==='BUY'?ex-en:en-ex;
+    const rr=+(pnl/risk).toFixed(2);
+    const dt=new Date(cur.t);
+    const mo=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}`;
+    const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    trades.push({date:dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+      mo,moLabel:`${MN[dt.getMonth()]} '${String(dt.getFullYear()).slice(2)}`,
+      dir,en:+en.toFixed(2),sl:+sl.toFixed(2),tp1:+tp1.toFixed(2),tp2:+tp2.toFixed(2),
+      ex:+ex.toFixed(2),risk:+risk.toFixed(2),pnl:+pnl.toFixed(2),rr,res,c4,win:pnl>0});
+  }
+  return trades;
+}
+
+// ══ STRATEGY REGISTRY ══
+const STRATS={
+  vwap_ema9:{name:'VWAP + EMA9',sym:'GC=F',
+    params:{ep:9,sb:0.5,mnSL:2,mxSL:35,r1:2,r2:3,lf:30},run:runVwapEma9}
+};
+
+// ══ DATA FETCH ══
+async function fetchData(sym,s,e){
+  const p1=Math.floor(s/1000),p2=Math.floor(e/1000);
+  const yfUrl=`https://query1.finance.yahoo.com/v8/finance/chart/${sym}?period1=${p1}&period2=${p2}&interval=1h&includePrePost=false`;
+  const tries=[
+    `https://api.allorigins.win/get?url=${encodeURIComponent(yfUrl)}`,
+    `https://corsproxy.io/?${encodeURIComponent(yfUrl)}`,
+    yfUrl
+  ];
+  for(let i=0;i<tries.length;i++){
+    try{
+      const r=await fetch(tries[i],{signal:AbortSignal.timeout(10000)});
+      let j=await r.json();
+      if(i===0&&j.contents)j=JSON.parse(j.contents);
+      const res=j?.chart?.result?.[0];
+      if(!res||!res.timestamp)continue;
+      const ts=res.timestamp,q=res.indicators.quote[0];
+      const cs=ts.map((t,k)=>({t:t*1000,o:q.open[k],h:q.high[k],l:q.low[k],c:q.close[k],v:q.volume[k]||500}))
+        .filter(c=>c.o!=null&&c.h!=null&&c.l!=null&&c.c!=null);
+      if(cs.length>20)return{cs,src:'Yahoo Finance (live)'};
+    }catch(err){}
+  }
+  return{cs:synthGold(s,e),src:'Synthetic demo data (live fetch unavailable)'};
+}
+
+function synthGold(s,e){
+  const cs=[];let price=2050,t=s,seed=(s%9999)+1;
+  const rng=()=>{seed=(seed*1664525+1013904223)%4294967296;return seed/4294967296;};
+  while(t<e){
+    const d=new Date(t);
+    const dy=d.getDay(),h=d.getHours();
+    if(dy===0||dy===6||h<1||h>21){t+=3600000;continue;}
+    const mv=(rng()-.499)*13+.025,vol=3+rng()*8;
+    price=Math.max(1600,price+mv);
+    const hi=price+Math.abs((rng()-.3)*vol),lo=price-Math.abs((rng()-.3)*vol);
+    cs.push({t,o:+(price-mv/2).toFixed(2),h:+Math.max(hi,price).toFixed(2),
+      l:+Math.min(lo,price).toFixed(2),c:+price.toFixed(2),v:Math.floor(500+rng()*3000)});
+    t+=3600000;
+  }
+  return cs;
+}
+
+// ══ STATS ══
+function stats(trades){
+  if(!trades.length)return null;
+  const w=trades.filter(t=>t.win),l=trades.filter(t=>!t.win);
+  const c4=trades.filter(t=>t.c4),nc4=trades.filter(t=>!t.c4);
+  let cum=0;
+  const eq=trades.map((t,i)=>({x:i+1,y:+(cum+=t.pnl).toFixed(1)}));
+  const mo={};
+  trades.forEach(t=>{if(!mo[t.mo])mo[t.mo]={lb:t.moLabel,pnl:0};mo[t.mo].pnl+=t.pnl;});
+  const moArr=Object.keys(mo).sort().map(k=>({lb:mo[k].lb,pnl:+mo[k].pnl.toFixed(1)}));
+  const RESULTS=['SL_HIT','TP1_1:2','TP2_1:3','TRAIL_PROFIT','TRAIL_BE','TIMEOUT'];
+  const byR=RESULTS.map(r=>({r,n:trades.filter(t=>t.res===r).length}));
+  const N=trades.length;
+  const safe=(arr,fn)=>arr.length?+(arr.reduce(fn,0)/arr.length).toFixed(1):0;
+  const bWR=(100*trades.filter(t=>t.dir==='BUY'&&t.win).length/Math.max(1,trades.filter(t=>t.dir==='BUY').length));
+  const sWR=(100*trades.filter(t=>t.dir==='SELL'&&t.win).length/Math.max(1,trades.filter(t=>t.dir==='SELL').length));
+  const c4WR=c4.length?(100*c4.filter(t=>t.win).length/c4.length):null;
+  const nc4WR=nc4.length?(100*nc4.filter(t=>t.win).length/nc4.length):null;
+  const BINS=[{lo:-Infinity,hi:-20,lb:'<-20'},{lo:-20,hi:-10,lb:'-20→-10'},{lo:-10,hi:0,lb:'-10→0'},
+    {lo:0,hi:10,lb:'0→+10'},{lo:10,hi:20,lb:'+10→+20'},{lo:20,hi:Infinity,lb:'>+20'}];
+  const dist=BINS.map(b=>({lb:b.lb,n:trades.filter(t=>t.pnl>b.lo&&t.pnl<=b.hi).length,neg:b.hi<=0}));
+  return{N,w:w.length,l:l.length,wr:(100*w.length/N).toFixed(1),
+    totalPnl:+trades.reduce((s,t)=>s+t.pnl,0).toFixed(1),
+    avgRR:+(trades.reduce((s,t)=>s+t.rr,0)/N).toFixed(2),
+    avgW:safe(w,(s,t)=>s+t.pnl),avgL:safe(l,(s,t)=>s+t.pnl),
+    best:+Math.max(...trades.map(t=>t.pnl)).toFixed(1),worst:+Math.min(...trades.map(t=>t.pnl)).toFixed(1),
+    c4WR:c4WR!=null?c4WR.toFixed(1):null,nc4WR:nc4WR!=null?nc4WR.toFixed(1):null,
+    c4n:c4.length,nc4n:nc4.length,
+    bWR:bWR.toFixed(1),sWR:sWR.toFixed(1),
+    bN:trades.filter(t=>t.dir==='BUY').length,sN:trades.filter(t=>t.dir==='SELL').length,
+    eq,moArr,byR,dist};
+}
+
+// ══ CHARTS ══
+const CH={};
+const GC='rgba(128,128,128,0.1)',TC='#888780';
+const BASE={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}};
+function dc(id){if(CH[id]){CH[id].destroy();delete CH[id];}}
+
+function drawEq(eq){
+  dc('eq');
+  const pos=eq[eq.length-1]?.y>=0;
+  CH.eq=new Chart(document.getElementById('c-eq'),{type:'line',
+    data:{labels:eq.map(p=>p.x),datasets:[{data:eq.map(p=>p.y),
+      borderColor:pos?'#1D9E75':'#D85A30',backgroundColor:'rgba(55,138,221,0.06)',
+      fill:true,tension:.35,pointRadius:0,borderWidth:1.5}]},
+    options:{...BASE,scales:{x:{display:false},
+      y:{ticks:{color:TC,callback:v=>v+' pts'},grid:{color:GC}}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`Trade #${c.label}: ${c.raw} pts`}}}}});
+}
+function drawDonut(byR){
+  dc('do');
+  const COL=['#D85A30','#378ADD','#1D9E75','#639922','#888780','#B4B2A9'];
+  const LBL=['SL Hit','TP1 1:2','TP2 1:3','Trail Profit','Trail BE','Timeout'];
+  const data=byR.map(r=>r.n);
+  const tot=data.reduce((a,b)=>a+b,0);
+  document.getElementById('dl').innerHTML=LBL.map((l,i)=>byR[i].n>0?
+    `<span class="li"><span class="ls" style="background:${COL[i]}"></span>${l} (${byR[i].n})</span>`:''
+  ).join('');
+  CH.do=new Chart(document.getElementById('c-do'),{type:'doughnut',
+    data:{labels:LBL,datasets:[{data,backgroundColor:COL,borderWidth:0}]},
+    options:{...BASE,cutout:'63%',plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw} (${(100*c.raw/tot).toFixed(1)}%)`}}}}});
+}
+function drawWR(st){
+  dc('wr');
+  const wr=[+st.wr,st.c4WR!=null?+st.c4WR:null,st.nc4WR!=null?+st.nc4WR:null,+st.bWR,+st.sWR];
+  const labels=['All trades','4H confirmed','No 4H conf','BUY','SELL'];
+  const validIdx=wr.map((v,i)=>v!=null?i:-1).filter(i=>i>=0);
+  CH.wr=new Chart(document.getElementById('c-wr'),{type:'bar',
+    data:{labels:validIdx.map(i=>labels[i]),
+      datasets:[
+        {label:'Win%',data:validIdx.map(i=>wr[i]),backgroundColor:'#1D9E75',borderRadius:3,stack:'s'},
+        {label:'Loss%',data:validIdx.map(i=>+(100-wr[i]).toFixed(1)),backgroundColor:'#D85A30',borderRadius:3,stack:'s'}
+      ]},
+    options:{...BASE,scales:{x:{stacked:true,ticks:{color:TC,font:{size:10}},grid:{display:false}},
+      y:{stacked:true,max:100,ticks:{color:TC,callback:v=>v+'%'},grid:{color:GC}}},
+      plugins:{legend:{display:false}}}});
+}
+function drawMonthly(moArr){
+  dc('mo');
+  CH.mo=new Chart(document.getElementById('c-mo'),{type:'bar',
+    data:{labels:moArr.map(m=>m.lb),
+      datasets:[{data:moArr.map(m=>m.pnl),
+        backgroundColor:moArr.map(m=>m.pnl>=0?'#1D9E75':'#D85A30'),borderRadius:3}]},
+    options:{...BASE,scales:{x:{ticks:{color:TC,font:{size:10}},grid:{display:false}},
+      y:{ticks:{color:TC,callback:v=>v+' pts'},grid:{color:GC}}}}});
+}
+function drawDir(st){
+  dc('dir');
+  CH.dir=new Chart(document.getElementById('c-dir'),{type:'bar',
+    data:{labels:[`BUY (${st.bN})`,`SELL (${st.sN})`],
+      datasets:[{data:[+st.bWR,+st.sWR],backgroundColor:['#378ADD','#D85A30'],borderRadius:4}]},
+    options:{...BASE,scales:{x:{ticks:{color:TC},grid:{display:false}},
+      y:{max:100,ticks:{color:TC,callback:v=>v+'%'},grid:{color:GC}}}}});
+}
+function drawDist(dist){
+  dc('dist');
+  CH.dist=new Chart(document.getElementById('c-dist'),{type:'bar',
+    data:{labels:dist.map(d=>d.lb),
+      datasets:[{data:dist.map(d=>d.n),
+        backgroundColor:dist.map(d=>d.neg?'rgba(216,90,48,.7)':'rgba(29,158,117,.7)'),borderRadius:3}]},
+    options:{...BASE,scales:{x:{ticks:{color:TC,font:{size:9}},grid:{display:false}},
+      y:{ticks:{color:TC},grid:{color:GC}}}}});
+}
+
+// ══ UI RENDER ══
+const RB={'SL_HIT':'bl','TP1_1:2':'bw','TP2_1:3':'bw','TRAIL_PROFIT':'bw','TRAIL_BE':'bn','TIMEOUT':'bn'};
+function renderMetrics(st){
+  const cards=[
+    {lb:'Total trades',val:st.N,cls:'b'},
+    {lb:'Win rate (all)',val:st.wr+'%',cls:+st.wr>=50?'g':'r'},
+    {lb:'4H confirmed WR',val:st.c4WR!=null?st.c4WR+'%':'—',cls:'g'},
+    {lb:'Total PnL (pts)',val:(st.totalPnl>0?'+':'')+st.totalPnl,cls:st.totalPnl>=0?'g':'r'},
+    {lb:'Avg win',val:'+'+st.avgW+' pts',cls:'g'},
+    {lb:'Avg loss',val:st.avgL+' pts',cls:'r'},
+    {lb:'Best trade',val:'+'+st.best+' pts',cls:'g'},
+    {lb:'Worst trade',val:st.worst+' pts',cls:'r'},
+  ];
+  document.getElementById('mgrid').innerHTML=cards.map(c=>`<div class="mc"><div class="ml">${c.lb}</div><div class="mv ${c.cls}">${c.val}</div></div>`).join('');
+  const imp=st.c4WR!=null&&st.nc4WR!=null?(+st.c4WR-+st.nc4WR).toFixed(1):null;
+  document.getElementById('ins').innerHTML=imp!=null?
+    `<strong>Key insight — 4H confirmation filter</strong><br><span>Without 4H: <strong>${st.nc4WR}%</strong> WR → With 4H confirmed: <strong>${st.c4WR}%</strong> WR (<strong>+${imp}% edge</strong>). Always wait for 4H candle to also close above/below VWAP & EMA9.</span>`:
+    `<strong>4H filter:</strong> Not enough data to compare — run a wider date range.`;
+}
+function renderTable(trades){
+  document.getElementById('tc').textContent=trades.length;
+  document.getElementById('tb').innerHTML=trades.map((t,i)=>`<tr>
+    <td style="color:var(--color-text-secondary)">${i+1}</td>
+    <td>${t.date}</td>
+    <td><span class="bx ${t.dir==='BUY'?'bb':'bs'}">${t.dir}</span></td>
+    <td>${t.en}</td>
+    <td style="color:#D85A30">${t.sl}</td>
+    <td style="color:#185FA5">${t.tp1}</td>
+    <td style="color:#1D9E75">${t.tp2}</td>
+    <td>${t.ex}</td>
+    <td style="color:var(--color-text-secondary)">${t.risk}</td>
+    <td style="color:${t.pnl>=0?'#1D9E75':'#D85A30'};font-weight:500">${t.pnl>=0?'+':''}${t.pnl}</td>
+    <td style="color:var(--color-text-secondary)">${t.rr}</td>
+    <td><span class="bx ${RB[t.res]||'bn'}">${t.res.replace(/_/g,' ')}</span></td>
+    <td><span class="bx ${t.c4?'bc':'bn'}">${t.c4?'YES':'—'}</span></td>
+  </tr>`).join('');
+}
+
+// ══ PERIOD SELECTION ══
+let selP='6m';
+document.querySelectorAll('.pb').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.pb').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');selP=b.dataset.p;
+    document.getElementById('cdt').style.display=selP==='custom'?'flex':'none';
+  });
+});
+
+// ══ DEFAULT DATES ══
+const now=new Date();
+document.getElementById('d-to').value=now.toISOString().slice(0,10);
+const ago=new Date(now.getTime()-180*86400000);
+document.getElementById('d-from').value=ago.toISOString().slice(0,10);
+
+// ══ RUN BACKTEST ══
+document.getElementById('run-btn').addEventListener('click',async()=>{
+  const btn=document.getElementById('run-btn');
+  const stEl=document.getElementById('stbar');
+  btn.disabled=true;btn.textContent='⟳ Running...';
+  let s,e;
+  if(selP==='custom'){
+    const f=document.getElementById('d-from').value,t2=document.getElementById('d-to').value;
+    if(!f||!t2){stEl.textContent='⚠ Select both dates.';stEl.className='stbar err';btn.disabled=false;btn.textContent='▶ Run Backtest';return;}
+    s=new Date(f).getTime();e=new Date(t2).getTime()+86400000;
+  }else{
+    const MAP={'1m':30,'3m':90,'6m':180,'1y':365,'2y':730};
+    const days=MAP[selP]||180;
+    e=Date.now();s=e-days*86400000;
+  }
+  const sid=document.getElementById('strat-sel').value;
+  const strat=STRATS[sid];
+  if(!strat){stEl.textContent='Strategy not found.';stEl.className='stbar err';btn.disabled=false;btn.textContent='▶ Run Backtest';return;}
+  stEl.textContent='⟳ Fetching XAUUSD data…';stEl.className='stbar load';
+  try{
+    const{cs,src}=await fetchData(strat.sym,s,e);
+    stEl.textContent=`⟳ Running ${strat.name} on ${cs.length} candles…`;
+    await new Promise(r=>setTimeout(r,30));
+    const trades=strat.run(cs,strat.params);
+    const st=stats(trades);
+    if(!st){stEl.textContent='⚠ No trades found — try a wider date range.';stEl.className='stbar err';btn.disabled=false;btn.textContent='▶ Run Backtest';return;}
+    document.getElementById('results').style.display='block';
+    renderMetrics(st);
+    drawEq(st.eq);drawDonut(st.byR);drawWR(st);drawMonthly(st.moArr);drawDir(st);drawDist(st.dist);
+    renderTable(trades);
+    const from=new Date(s).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    const to=new Date(e).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    stEl.textContent=`✓ ${trades.length} trades | ${src} | ${from} – ${to}`;stEl.className='stbar ok';
+  }catch(err){
+    stEl.textContent=`✗ Error: ${err.message}`;stEl.className='stbar err';
+  }
+  btn.disabled=false;btn.textContent='▶ Run Backtest';
+});
+</script>
