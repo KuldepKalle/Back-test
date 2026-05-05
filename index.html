@@ -1,36 +1,39 @@
 
+<!DOCTYPE html>
+<html>
+<head>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body,div{font-family:var(--font-sans);color:var(--color-text-primary)}
-.d{padding:.5rem 0}
+body{font-family:var(--font-sans);color:var(--color-text-primary);padding:.5rem 0;font-size:13px}
 .pn{background:var(--color-background-secondary);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:.85rem}
 .pt{font-size:10px;letter-spacing:.08em;font-weight:600;color:var(--color-text-secondary);margin-bottom:.75rem;text-transform:uppercase}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
 .fg{display:flex;flex-direction:column;gap:3px}
 .fg label{font-size:11px;color:var(--color-text-secondary)}
 select,input[type=number],input[type=date]{border-radius:6px;border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);padding:5px 8px;font-size:12px}
-select{min-width:200px}
-input[type=number]{width:80px}
+select{min-width:240px}input[type=number]{width:85px}
 .pbg{display:flex;gap:3px;flex-wrap:wrap}
 .pb{padding:4px 9px;font-size:11px;border-radius:6px;border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
 .pb.active,.pb:hover{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
-.cdt{display:none;flex-direction:column;gap:4px}
+.cdt{display:none;flex-direction:column;gap:3px}
 .cdt label{font-size:11px;color:var(--color-text-secondary)}
-.cdt-row{display:flex;gap:5px;align-items:center;font-size:11px;color:var(--color-text-secondary)}
-#run-btn{padding:6px 16px;border-radius:6px;border:none;background:var(--color-text-primary);color:var(--color-background-primary);font-size:13px;font-weight:600;cursor:pointer}
-#run-btn:hover{opacity:.85}
-#run-btn:disabled{opacity:.35;cursor:not-allowed}
+.drow{display:flex;gap:5px;align-items:center;font-size:11px;color:var(--color-text-secondary)}
+#run-btn{padding:7px 18px;border-radius:6px;border:none;background:var(--color-text-primary);color:var(--color-background-primary);font-size:13px;font-weight:600;cursor:pointer}
+#run-btn:hover{opacity:.85}#run-btn:disabled{opacity:.35;cursor:not-allowed}
 .sb{font-size:12px;padding:.3rem 0;min-height:20px;color:var(--color-text-secondary)}
 .sb.ld{color:#185FA5}.sb.ok{color:#1D9E75}.sb.er{color:#D85A30}
-.infobar{font-size:12px;color:var(--color-text-secondary);background:var(--color-background-secondary);border-radius:8px;padding:.55rem .9rem;margin-bottom:.85rem;line-height:1.75}
-.infobar strong{color:var(--color-text-primary)}
-.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:7px;margin-bottom:.85rem}
-.mc{background:var(--color-background-secondary);border-radius:8px;padding:.7rem .9rem}
+.ibar{font-size:11.5px;color:var(--color-text-secondary);background:var(--color-background-secondary);border-radius:8px;padding:.55rem .9rem;margin-bottom:.75rem;line-height:1.8}
+.ibar strong{color:var(--color-text-primary)}
+.trail-box{background:rgba(29,158,117,.08);border:.5px solid rgba(29,158,117,.25);border-radius:8px;padding:.6rem .9rem;margin-bottom:.75rem;font-size:11.5px;line-height:1.75;color:var(--color-text-secondary)}
+.trail-box strong{color:var(--color-text-primary)}
+.fib-box{background:rgba(55,138,221,.07);border:.5px solid rgba(55,138,221,.25);border-radius:8px;padding:.6rem .9rem;margin-bottom:.75rem;font-size:11.5px;line-height:1.75;color:var(--color-text-secondary)}
+.fib-box strong{color:var(--color-text-primary)}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:7px;margin-bottom:.75rem}
+.mc{background:var(--color-background-secondary);border-radius:8px;padding:.65rem .9rem}
 .ml{font-size:10px;color:var(--color-text-secondary);margin-bottom:2px}
-.mv{font-size:19px;font-weight:500}
-.mv.g{color:#1D9E75}.mv.r{color:#D85A30}.mv.b{color:#185FA5}
-.mv.sm{font-size:14px}
-.ins{border-left:3px solid #1D9E75;background:var(--color-background-secondary);border-radius:0 8px 8px 0;padding:.6rem .9rem;margin-bottom:.85rem;font-size:12.5px;line-height:1.65}
+.mv{font-size:18px;font-weight:500}
+.mv.g{color:#1D9E75}.mv.r{color:#D85A30}.mv.b{color:#185FA5}.mv.sm{font-size:13px}
+.ins{border-left:3px solid #1D9E75;background:var(--color-background-secondary);border-radius:0 8px 8px 0;padding:.6rem .9rem;margin-bottom:.75rem;font-size:12px;line-height:1.65}
 .cc{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:10px;padding:.85rem;margin-bottom:.75rem}
 .ct{font-size:11.5px;font-weight:500;color:var(--color-text-secondary);margin-bottom:.6rem}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
@@ -38,151 +41,143 @@ input[type=number]{width:80px}
 .leg{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px;font-size:11px;color:var(--color-text-secondary)}
 .li{display:flex;align-items:center;gap:3px}
 .ls{width:9px;height:9px;border-radius:2px;flex-shrink:0}
-/* Monthly grid */
-.mo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px;margin-top:.5rem}
-.mo-card{border-radius:8px;padding:.55rem .75rem;text-align:center}
-.mo-card.profit{background:rgba(29,158,117,.12);border:.5px solid rgba(29,158,117,.3)}
-.mo-card.loss{background:rgba(216,90,48,.1);border:.5px solid rgba(216,90,48,.25)}
-.mo-card .mo-name{font-size:10px;color:var(--color-text-secondary);margin-bottom:2px}
-.mo-card .mo-usd{font-size:14px;font-weight:600}
+.mo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:5px;margin-top:.4rem}
+.mo-card{border-radius:8px;padding:.5rem .7rem;text-align:center}
+.mo-card.profit{background:rgba(29,158,117,.1);border:.5px solid rgba(29,158,117,.28)}
+.mo-card.loss{background:rgba(216,90,48,.08);border:.5px solid rgba(216,90,48,.22)}
+.mo-card.even{background:var(--color-background-secondary);border:.5px solid var(--color-border-tertiary)}
+.mo-name{font-size:10px;color:var(--color-text-secondary);margin-bottom:2px}
+.mo-usd{font-size:13px;font-weight:600}
 .mo-card.profit .mo-usd{color:#1D9E75}
 .mo-card.loss .mo-usd{color:#D85A30}
-.mo-card .mo-meta{font-size:10px;color:var(--color-text-secondary)}
-/* Trade table */
+.mo-card.even .mo-usd{color:var(--color-text-secondary)}
+.mo-meta{font-size:10px;color:var(--color-text-secondary)}
 .tw{overflow-x:auto;max-height:280px;overflow-y:auto;border-radius:8px;border:.5px solid var(--color-border-tertiary)}
-.tt{width:100%;border-collapse:collapse;font-size:11px;min-width:820px}
+.tt{width:100%;border-collapse:collapse;font-size:11px;min-width:860px}
 .tt th{position:sticky;top:0;background:var(--color-background-secondary);font-weight:500;font-size:10px;color:var(--color-text-secondary);padding:5px 8px;border-bottom:.5px solid var(--color-border-tertiary);text-align:left;white-space:nowrap}
 .tt td{padding:4px 8px;border-bottom:.5px solid var(--color-border-tertiary);white-space:nowrap}
 .bx{display:inline-block;padding:1px 6px;border-radius:99px;font-size:10px;font-weight:500}
 .bw{background:#EAF3DE;color:#3B6D11}.bl{background:#FAECE7;color:#993C1D}
 .bn{background:var(--color-background-secondary);color:var(--color-text-secondary)}
-.bb{background:#E6F1FB;color:#0C447C}.bs{background:#FAECE7;color:#993C1D}
-.bc{background:#EAF3DE;color:#3B6D11}
-/* Trailing legend */
-.trail-box{background:var(--color-background-secondary);border-radius:8px;padding:.65rem .9rem;margin-bottom:.85rem;font-size:12px;line-height:1.75;color:var(--color-text-secondary)}
-.trail-box strong{color:var(--color-text-primary)}
-@media(max-width:480px){.g2{grid-template-columns:1fr}.mg{grid-template-columns:repeat(3,1fr)}}
+.bb{background:#E6F1FB;color:#0C447C}.bsl{background:#FAECE7;color:#993C1D}
+.bc{background:#EAF3DE;color:#3B6D11}.bfib{background:#EEF4FD;color:#1a5fa8}
+.strat-sel-row{display:flex;gap:6px;flex-wrap:wrap}
+.strat-btn{padding:6px 14px;font-size:12px;border-radius:8px;border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:all .15s;font-weight:500}
+.strat-btn.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.strat-btn:hover:not(.active){background:var(--color-background-secondary)}
+@media(max-width:480px){.g2{grid-template-columns:1fr}}
 </style>
+</head>
+<body>
 
-<div class="d">
-
-<!-- ── SETTINGS ── -->
+<!-- ACCOUNT SETTINGS -->
 <div class="pn">
   <div class="pt">Account & Risk Settings</div>
   <div class="row">
     <div class="fg"><label>Account ($)</label><input type="number" id="acct" value="10000" step="1000" min="1000"></div>
     <div class="fg"><label>Lot size</label><input type="number" id="lot" value="0.05" step="0.01" min="0.01"></div>
-    <div class="fg"><label>SL (points)</label><input type="number" id="slpts" value="10" step="1" min="1"></div>
-    <div class="fg"><label>$/point (0.05 lot)</label><input type="number" id="dpp" value="5" step="0.5" min="0.5" title="For XAUUSD: lot*100*price_per_oz / approx $5 per pt for 0.05 lot"></div>
+    <div class="fg"><label>SL (points)</label><input type="number" id="slpts" value="10" step="1" min="2" max="50"></div>
+    <div class="fg"><label>$/point (for lot)</label><input type="number" id="dpp" value="5" step="0.5" min="0.5" title="XAUUSD: 0.05 lot ≈ $5/pt"></div>
   </div>
 </div>
 
-<!-- ── STRATEGY & PERIOD ── -->
+<!-- STRATEGY SELECTOR -->
 <div class="pn">
-  <div class="pt">Strategy & Period</div>
+  <div class="pt">Strategy</div>
+  <div class="strat-sel-row">
+    <button class="strat-btn active" data-s="vwap_ema9">📊 VWAP + EMA9 Crossover</button>
+    <button class="strat-btn" data-s="fib618">📐 Fibonacci 0.618 Retracement</button>
+  </div>
+</div>
+
+<!-- TRAILING RULE - changes by strategy -->
+<div id="rule-vwap" class="trail-box">
+  <strong>VWAP + EMA9 — Trailing SL Rules (max 1:3):</strong>
+  Entry → SL at <strong>-10 pts (-$50)</strong> &nbsp;|&nbsp;
+  Price hits <strong>1:1</strong> → SL moves to <strong>Break Even ($0)</strong> &nbsp;|&nbsp;
+  Price hits <strong>1:2</strong> → SL moves to <strong>+1R (+$50 locked)</strong> &nbsp;|&nbsp;
+  Price hits <strong>1:3</strong> → <strong>Exit, take $150 profit ✓</strong>
+</div>
+<div id="rule-fib" class="fib-box" style="display:none">
+  <strong>Fibonacci 0.618 Strategy Rules:</strong>
+  <strong>BUY:</strong> 4H green candle above VWAP & EMA9 + 1H green candle above VWAP & EMA9 → find swing low→high → entry at <strong>0.618 retracement</strong> level (golden ratio) on pullback &nbsp;|&nbsp;
+  <strong>SELL:</strong> 4H red below + 1H red below → swing high→low → entry at <strong>0.618 retracement</strong> rally &nbsp;|&nbsp;
+  SL: beyond swing point &nbsp;|&nbsp; Max target: <strong>1:3</strong> with same trailing steps
+</div>
+
+<!-- PERIOD -->
+<div class="pn">
+  <div class="pt">Period</div>
   <div class="row">
-    <div class="fg"><label>Strategy</label>
-      <select id="stsel">
-        <option value="vwap_ema9">VWAP + EMA9 Crossover (XAUUSD Gold)</option>
-        <option disabled>— More strategies coming soon —</option>
-      </select>
+    <div class="pbg">
+      <button class="pb" data-p="1m">1M</button>
+      <button class="pb" data-p="3m">3M</button>
+      <button class="pb active" data-p="6m">6M</button>
+      <button class="pb" data-p="1y">1Y</button>
+      <button class="pb" data-p="2y">2Y</button>
+      <button class="pb" data-p="custom">Custom</button>
     </div>
-    <div class="fg"><label>Period</label>
-      <div class="pbg">
-        <button class="pb" data-p="1m">1M</button>
-        <button class="pb" data-p="3m">3M</button>
-        <button class="pb active" data-p="6m">6M</button>
-        <button class="pb" data-p="1y">1Y</button>
-        <button class="pb" data-p="2y">2Y</button>
-        <button class="pb" data-p="custom">Custom</button>
-      </div>
-    </div>
-    <div class="cdt" id="cdt"><label>Date range</label>
-      <div class="cdt-row">
-        <input type="date" id="dfr">
-        <span>→</span>
-        <input type="date" id="dto">
-      </div>
+    <div class="cdt" id="cdt">
+      <label>Date range</label>
+      <div class="drow"><input type="date" id="dfr"><span>→</span><input type="date" id="dto"></div>
     </div>
     <button id="run-btn">▶ Run Backtest</button>
   </div>
 </div>
 
-<div id="stbar" class="sb">Configure settings above and click ▶ Run Backtest.</div>
+<div id="stbar" class="sb">Select a strategy and period then click ▶ Run Backtest.</div>
 
-<!-- ── TRAILING SL RULES ── -->
-<div class="trail-box">
-  <strong>Trailing SL rules applied:</strong>
-  Entry → SL at <strong>-10 pts ($50 loss)</strong> |
-  Hit 1:2 (+20 pts) → SL locks at <strong>+10 pts ($50 profit)</strong> |
-  Hit 1:3 (+30 pts) → SL locks at <strong>+20 pts ($100 profit)</strong> |
-  Hit 1:4 → SL locks at +30 pts … and so on every 10 pts step. Target is open-ended (1:9+ if price runs).
-</div>
-
+<!-- RESULTS -->
 <div id="res" style="display:none">
-  <!-- KPI Cards -->
   <div class="mg" id="mgrid"></div>
   <div class="ins" id="ins"></div>
-
-  <!-- Monthly P&L Grid -->
   <div class="cc">
-    <div class="ct">Monthly P&L ($) — green = profitable month, red = losing month</div>
+    <div class="ct">Monthly P&L ($) — each card = 1 month result</div>
     <div class="mo-grid" id="mo-grid"></div>
   </div>
-
-  <!-- Equity Curve -->
   <div class="cc">
-    <div class="ct">Equity curve — cumulative $ P&L</div>
-    <div style="position:relative;height:180px"><canvas id="c-eq"></canvas></div>
+    <div class="ct">Equity curve — running $ P&L (entry to exit)</div>
+    <div style="position:relative;height:175px"><canvas id="c-eq"></canvas></div>
   </div>
-
   <div class="g2">
-    <!-- Donut -->
     <div class="cc">
       <div class="ct">Result breakdown</div>
       <div class="leg" id="dl"></div>
       <div style="position:relative;height:185px"><canvas id="c-do"></canvas></div>
     </div>
-    <!-- Win rate bars -->
     <div class="cc">
       <div class="ct">Win rate by filter</div>
       <div class="leg"><span class="li"><span class="ls" style="background:#1D9E75"></span>Win</span><span class="li"><span class="ls" style="background:#D85A30"></span>Loss</span></div>
       <div style="position:relative;height:185px"><canvas id="c-wr"></canvas></div>
     </div>
   </div>
-
   <div class="g2">
-    <!-- Monthly bar -->
     <div class="cc">
-      <div class="ct">Monthly PnL bar ($)</div>
+      <div class="ct">Monthly P&L bars ($)</div>
       <div style="position:relative;height:145px"><canvas id="c-mo"></canvas></div>
     </div>
-    <!-- PnL dist -->
     <div class="cc">
-      <div class="ct">$ PnL distribution</div>
+      <div class="ct">$ P&L distribution per trade</div>
       <div style="position:relative;height:145px"><canvas id="c-dist"></canvas></div>
     </div>
   </div>
-
   <div class="g2">
     <div class="cc">
       <div class="ct">BUY vs SELL win rate</div>
       <div style="position:relative;height:130px"><canvas id="c-dir"></canvas></div>
     </div>
     <div class="cc">
-      <div class="ct">Max RR achieved per trade</div>
-      <div style="position:relative;height:130px"><canvas id="c-rr"></canvas></div>
+      <div class="ct">Trades by result type ($)</div>
+      <div style="position:relative;height:130px"><canvas id="c-rres"></canvas></div>
     </div>
   </div>
-
-  <!-- Trade log -->
   <div class="cc">
-    <div class="ct">Full trade log — <span id="tc">0</span> trades</div>
+    <div class="ct">Full trade log — <span id="tc">0</span> trades &nbsp;<span style="font-size:10px;color:var(--color-text-secondary)">(scroll)</span></div>
     <div class="tw">
       <table class="tt">
         <thead><tr>
-          <th>#</th><th>Date</th><th>Dir</th><th>Entry</th>
-          <th>SL (-$)</th><th>TP1 1:2 (+$)</th><th>TP2 1:3 (+$)</th>
+          <th>#</th><th>Date</th><th>Strategy</th><th>Dir</th>
+          <th>Entry</th><th>SL</th><th>TP1 ($)</th><th>TP2 ($)</th><th>TP3 ($)</th>
           <th>Exit</th><th>Pts</th><th>$ P&L</th><th>RR</th><th>Result</th><th>4H✓</th>
         </tr></thead>
         <tbody id="tb"></tbody>
@@ -190,39 +185,69 @@ input[type=number]{width:80px}
     </div>
   </div>
 </div>
-</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-// ── INDICATORS ──
-function calcEMA(v,p){const k=2/(p+1);return v.map((x,i)=>i===0?x:x*k+arguments.callee._last*(1-k),arguments.callee._last=v[0]);}
-// Proper EMA
+// ═══════════════════════════════════════════════════
+// INDICATORS
+// ═══════════════════════════════════════════════════
 function ema(arr,p){const k=2/(p+1),o=[];arr.forEach((x,i)=>o.push(i===0?x:x*k+o[i-1]*(1-k)));return o;}
-function vwap(cs){const o=[];let cv=0,cTPV=0,ld='';
+function vwapCalc(cs){
+  const o=[];let cv=0,cTPV=0,ld='';
   cs.forEach(c=>{const d=new Date(c.t).toDateString();if(d!==ld){cv=0;cTPV=0;ld=d;}
   const tp=(c.h+c.l+c.c)/3;cTPV+=tp*c.v;cv+=c.v;o.push(cv>0?cTPV/cv:c.c);});return o;}
 function build4H(cs,ep){
-  const B={};cs.forEach(c=>{const d=new Date(c.t);d.setMinutes(0,0,0);d.setHours(Math.floor(d.getHours()/4)*4);const k=d.getTime();if(!B[k])B[k]=[];B[k].push(c);});
+  const B={};
+  cs.forEach(c=>{const d=new Date(c.t);d.setMinutes(0,0,0);d.setHours(Math.floor(d.getHours()/4)*4);const k=d.getTime();if(!B[k])B[k]=[];B[k].push(c);});
   const bars=Object.keys(B).sort((a,b)=>+a-+b).map(k=>{const a=B[k];return{t:+k,o:a[0].o,h:Math.max(...a.map(x=>x.h)),l:Math.min(...a.map(x=>x.l)),c:a[a.length-1].c,v:a.reduce((s,x)=>s+x.v,0)};});
-  const e9=ema(bars.map(b=>b.c),ep),vw=vwap(bars);
-  bars.forEach((b,i)=>{b.e9=e9[i];b.vw=vw[i];});return bars;}
-function conf4H(bars,t,dir){let b=null;for(let i=bars.length-1;i>=0;i--){if(bars[i].t<=t){b=bars[i];break;}}if(!b)return false;return dir==='BUY'?b.c>b.vw&&b.c>b.e9:b.c<b.vw&&b.c<b.e9;}
+  const e9=ema(bars.map(b=>b.c),ep),vw=vwapCalc(bars);
+  bars.forEach((b,i)=>{b.e9=e9[i];b.vw=vw[i];b.bull=b.c>b.vw&&b.c>b.e9&&b.c>b.o;b.bear=b.c<b.vw&&b.c<b.e9&&b.c<b.o;});
+  return bars;
+}
+function get4H(bars,t){let b=null;for(let i=bars.length-1;i>=0;i--){if(bars[i].t<=t){b=bars[i];break;}}return b;}
 
-// ── STEP-TRAILING SL ──
-// SL steps: at RR=2 → SL→1, at RR=3 → SL→2, at RR=4 → SL→3 ...
-function stepSL(en,sl,dir,slPts,maxRR){
-  // maxRR is current best RR integer floor
-  const step=Math.max(0,Math.floor(maxRR)-1); // SL = (maxRR_achieved-1) * risk
-  if(step<=0)return sl;
-  const lockedPts=step*slPts;
-  if(dir==='BUY')return Math.max(sl, en+lockedPts);
-  else return Math.min(sl, en-lockedPts);
+// ═══════════════════════════════════════════════════
+// CORE: SIMULATE TRADE — trailing SL, max 1:3
+// ═══════════════════════════════════════════════════
+function simTrade(futCs,entry,dir,slPts,dpp,lf=40){
+  const risk=slPts;
+  const tp1=dir==='BUY'?entry+risk:entry-risk;
+  const tp2=dir==='BUY'?entry+2*risk:entry-2*risk;
+  const tp3=dir==='BUY'?entry+3*risk:entry-3*risk;
+  let tsl=dir==='BUY'?entry-risk:entry+risk;
+  let result='TIMEOUT',ex=entry,maxRR=0;
+  const lim=Math.min(lf,futCs.length);
+  for(let j=0;j<lim;j++){
+    const f=futCs[j];
+    if(dir==='BUY'){
+      const rr=(f.h-entry)/risk;
+      if(rr>maxRR)maxRR=rr;
+      // Step trail: 1R→BE, 2R→lock1R, 3R→exit
+      if(maxRR>=1) tsl=Math.max(tsl,entry);           // BE
+      if(maxRR>=2) tsl=Math.max(tsl,entry+risk);      // lock 1R
+      if(f.h>=tp3){ex=tp3;result='TP3_1:3';break;}
+      if(f.l<=tsl){ex=tsl;const lr=Math.round((tsl-entry)/risk);result=lr<=0?'SL_HIT':lr===1?'TRAIL_1:1':'TRAIL_BE';if(tsl===entry)result='TRAIL_BE';break;}
+    }else{
+      const rr=(entry-f.l)/risk;
+      if(rr>maxRR)maxRR=rr;
+      if(maxRR>=1) tsl=Math.min(tsl,entry);
+      if(maxRR>=2) tsl=Math.min(tsl,entry-risk);
+      if(f.l<=tp3){ex=tp3;result='TP3_1:3';break;}
+      if(f.h>=tsl){ex=tsl;const lr=Math.round((entry-tsl)/risk);result=lr<=0?'SL_HIT':lr===1?'TRAIL_1:1':'TRAIL_BE';if(tsl===entry)result='TRAIL_BE';break;}
+    }
+  }
+  if(result==='TIMEOUT'){ex=futCs[Math.min(lim-1,futCs.length-1)]?.c||entry;}
+  const pnlPts=+(dir==='BUY'?ex-entry:entry-ex).toFixed(2);
+  return{tp1:+tp1.toFixed(2),tp2:+tp2.toFixed(2),tp3:+tp3.toFixed(2),
+    ex:+ex.toFixed(2),pnlPts,rr:+(pnlPts/risk).toFixed(2),pnlUSD:+(pnlPts*dpp).toFixed(2),result,maxRR:+maxRR.toFixed(2)};
 }
 
-// ── STRATEGY ──
-function runVwapEma9(cs,P){
-  const{ep,slPts,r1,r2,lf,dpp}=P;
-  const e9=ema(cs.map(c=>c.c),ep),vw=vwap(cs);
+// ═══════════════════════════════════════════════════
+// STRATEGY 1: VWAP + EMA9
+// ═══════════════════════════════════════════════════
+function runVwapEma9(cs,slPts,dpp){
+  const ep=9,lf=40;
+  const e9=ema(cs.map(c=>c.c),ep),vw=vwapCalc(cs);
   const b4h=build4H(cs,ep);
   const trades=[];
   for(let i=1;i<cs.length-lf-1;i++){
@@ -234,58 +259,96 @@ function runVwapEma9(cs,P){
     const isBuy=aB&&!pA,isSell=bB&&!pBl;
     if(!isBuy&&!isSell)continue;
     const dir=isBuy?'BUY':'SELL';
-    const c4=conf4H(b4h,cur.t,dir);
+    const b4=get4H(b4h,cur.t);
+    const c4=b4?(dir==='BUY'?b4.bull:b4.bear):false;
     const nx=cs[i+1];if(!nx)continue;
-    const en=nx.o;
-    const risk=slPts;
-    const sl=dir==='BUY'?en-risk:en+risk;
-    const tp1=dir==='BUY'?en+r1*risk:en-r1*risk;
-    const tp2=dir==='BUY'?en+r2*risk:en-r2*risk;
-    let tsl=sl,res='TIMEOUT',ex=cs[Math.min(i+lf,cs.length-1)].c;
-    let ext=cs[Math.min(i+lf,cs.length-1)].t,mxRR=0,mxPts=0;
-    for(let j=i+1;j<Math.min(i+1+lf,cs.length);j++){
-      const f=cs[j];
-      if(dir==='BUY'){
-        const hiPts=f.h-en;
-        mxRR=Math.max(mxRR,hiPts/risk);mxPts=Math.max(mxPts,hiPts);
-        tsl=stepSL(en,tsl,dir,risk,mxRR);
-        if(f.l<=tsl){
-          ex=tsl;ext=f.t;
-          const lockedPts=ex-en;
-          const step=Math.round(lockedPts/risk);
-          res=step<=0?'SL_HIT':step===1?'TRAIL_1:1':step===2?'TRAIL_1:2':`TRAIL_1:${step}`;
-          break;
-        }
-      }else{
-        const loPts=en-f.l;
-        mxRR=Math.max(mxRR,loPts/risk);mxPts=Math.max(mxPts,loPts);
-        tsl=stepSL(en,tsl,dir,risk,mxRR);
-        if(f.h>=tsl){
-          ex=tsl;ext=f.t;
-          const lockedPts=en-ex;
-          const step=Math.round(lockedPts/risk);
-          res=step<=0?'SL_HIT':step===1?'TRAIL_1:1':step===2?'TRAIL_1:2':`TRAIL_1:${step}`;
-          break;
-        }
-      }
-    }
-    // check final exit vs TP levels
-    const pnlPts=+(dir==='BUY'?ex-en:en-ex).toFixed(2);
-    const rr=+(pnlPts/risk).toFixed(2);
-    if(res==='TIMEOUT'){const step=Math.max(0,Math.floor(mxRR)-1);res=step>0?`TRAIL_1:${step}`:'TIMEOUT';}
-    const pnlUSD=+(pnlPts*dpp).toFixed(2);
+    const entry=nx.o;
+    const sl=dir==='BUY'?+(entry-slPts).toFixed(2):+(entry+slPts).toFixed(2);
+    const sim=simTrade(cs.slice(i+1),entry,dir,slPts,dpp,lf);
     const dt=new Date(cur.t);
     const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const mo=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}`;
-    const moLabel=`${MN[dt.getMonth()]} '${String(dt.getFullYear()).slice(2)}`;
-    trades.push({date:dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
-      mo,moLabel,dir,en:+en.toFixed(2),sl:+sl.toFixed(2),tp1:+tp1.toFixed(2),tp2:+tp2.toFixed(2),
-      ex:+ex.toFixed(2),risk,pnlPts,rr,pnlUSD,res,c4,win:pnlPts>0,mxRR:+mxRR.toFixed(2)});
+    trades.push({date:dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'2-digit'}),
+      mo,moLabel:`${MN[dt.getMonth()]} '${String(dt.getFullYear()).slice(2)}`,
+      strat:'VWAP+EMA9',dir,entry,sl,...sim,c4,win:sim.pnlPts>0});
   }
   return trades;
 }
 
-// ── DATA ──
+// ═══════════════════════════════════════════════════
+// STRATEGY 2: FIBONACCI 0.618
+// ═══════════════════════════════════════════════════
+function findSwing(cs,i,lookback=20){
+  const start=Math.max(0,i-lookback);
+  const seg=cs.slice(start,i+1);
+  if(seg.length<4)return null;
+  // Bull swing: find swing low then swing high (recent move up)
+  let sHiIdx=0,sLoIdx=0;
+  seg.forEach((c,k)=>{if(c.h>seg[sHiIdx].h)sHiIdx=k;if(c.l<seg[sLoIdx].l)sLoIdx=k;});
+  return{swingHigh:seg[sHiIdx].h,swingLow:seg[sLoIdx].l,
+    highFirst:sHiIdx<sLoIdx,hiIdx:sHiIdx,loIdx:sLoIdx};
+}
+const FIB=0.618;
+function runFib618(cs,slPts,dpp){
+  const ep=9,lf=40,lb=20,TOL=0.002;
+  const e9=ema(cs.map(c=>c.c),ep),vw=vwapCalc(cs);
+  const b4h=build4H(cs,ep);
+  const trades=[];
+  for(let i=lb;i<cs.length-lf-1;i++){
+    const cur=cs[i];
+    // 1H trend
+    const bullH=cur.c>vw[i]&&cur.c>e9[i]&&cur.c>cur.o;
+    const bearH=cur.c<vw[i]&&cur.c<e9[i]&&cur.c<cur.o;
+    if(!bullH&&!bearH)continue;
+    // 4H trend
+    const b4=get4H(b4h,cur.t);
+    if(!b4)continue;
+    const bull4=b4.bull,bear4=b4.bear;
+    const isBuy=bullH&&bull4,isSell=bearH&&bear4;
+    if(!isBuy&&!isSell)continue;
+    const dir=isBuy?'BUY':'SELL';
+    // Find swing
+    const sw=findSwing(cs,i,lb);
+    if(!sw)continue;
+    const{swingHigh,swingLow}=sw;
+    const range=swingHigh-swingLow;
+    if(range<slPts*0.8||range>slPts*8)continue; // sanity check
+    // 0.618 retracement level
+    let fib618,slLevel;
+    if(dir==='BUY'){
+      // In uptrend: price pulled back to 0.618 of up-move
+      fib618=+(swingHigh-FIB*range).toFixed(2);
+      slLevel=+(swingLow-slPts*0.3).toFixed(2);
+    }else{
+      // In downtrend: price rallied to 0.618 of down-move
+      fib618=+(swingLow+FIB*range).toFixed(2);
+      slLevel=+(swingHigh+slPts*0.3).toFixed(2);
+    }
+    // Check next candles for price touching 0.618
+    let triggered=false,trigCandle=null,trigIdx=-1;
+    for(let j=i+1;j<Math.min(i+6,cs.length-1);j++){
+      const f=cs[j];
+      if(dir==='BUY'&&f.l<=fib618&&f.h>=fib618-slPts*TOL){triggered=true;trigCandle=f;trigIdx=j;break;}
+      if(dir==='SELL'&&f.h>=fib618&&f.l<=fib618+slPts*TOL){triggered=true;trigCandle=f;trigIdx=j;break;}
+    }
+    if(!triggered||!trigCandle)continue;
+    const entry=fib618;
+    const actualSL=dir==='BUY'?+(entry-slPts).toFixed(2):+(entry+slPts).toFixed(2);
+    const sim=simTrade(cs.slice(trigIdx+1),entry,dir,slPts,dpp,lf);
+    const dt=new Date(cur.t);
+    const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const mo=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}`;
+    trades.push({date:dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'2-digit'}),
+      mo,moLabel:`${MN[dt.getMonth()]} '${String(dt.getFullYear()).slice(2)}`,
+      strat:'FIB 0.618',fibLevel:fib618,swingHigh,swingLow,dir,entry,sl:actualSL,...sim,
+      c4:true,win:sim.pnlPts>0});
+  }
+  return trades;
+}
+
+// ═══════════════════════════════════════════════════
+// DATA FETCH
+// ═══════════════════════════════════════════════════
 async function fetchData(sym,s,e){
   const p1=Math.floor(s/1000),p2=Math.floor(e/1000);
   const url=`https://query1.finance.yahoo.com/v8/finance/chart/${sym}?period1=${p1}&period2=${p2}&interval=1h&includePrePost=false`;
@@ -294,52 +357,55 @@ async function fetchData(sym,s,e){
       const r=await fetch(proxy,{signal:AbortSignal.timeout(9000)});
       let j=await r.json();
       if(proxy.includes('allorigins')&&j.contents)j=JSON.parse(j.contents);
-      const res=j?.chart?.result?.[0];if(!res||!res.timestamp)continue;
+      const res=j?.chart?.result?.[0];if(!res?.timestamp)continue;
       const ts=res.timestamp,q=res.indicators.quote[0];
-      const cs=ts.map((t,k)=>({t:t*1000,o:q.open[k],h:q.high[k],l:q.low[k],c:q.close[k],v:q.volume[k]||500})).filter(c=>c.o!=null&&c.c!=null);
+      const cs=ts.map((t,k)=>({t:t*1000,o:q.open[k],h:q.high[k],l:q.low[k],c:q.close[k],v:q.volume[k]||800})).filter(c=>c.o!=null&&c.c!=null);
       if(cs.length>30)return{cs,src:'Yahoo Finance (live)'};
     }catch(ex){}
   }
-  return{cs:synthGold(s,e),src:'Synthetic demo (live unavailable)'};
+  return{cs:synthGold(s,e),src:'Synthetic demo data'};
 }
 function synthGold(s,e){
-  const cs=[];let price=2050,t=s,seed=42;
+  const cs=[];let price=2100,t=s,seed=12345;
   const rng=()=>{seed=(seed*1664525+1013904223)%4294967296;return seed/4294967296;};
-  while(t<e){const d=new Date(t);const dy=d.getDay(),h=d.getHours();
+  while(t<e){
+    const d=new Date(t);const dy=d.getDay(),h=d.getHours();
     if(dy===0||dy===6||h<1||h>21){t+=3600000;continue;}
-    const mv=(rng()-.499)*13+.025,vol=3+rng()*8;
-    price=Math.max(1600,price+mv);
-    const hi=price+Math.abs((rng()-.3)*vol),lo=price-Math.abs((rng()-.3)*vol);
-    cs.push({t,o:+(price-mv/2).toFixed(2),h:+Math.max(hi,price).toFixed(2),l:+Math.min(lo,price).toFixed(2),c:+price.toFixed(2),v:Math.floor(500+rng()*3000)});
-    t+=3600000;}return cs;}
+    // Trending moves with pullbacks
+    const trend=Math.sin(t/86400000/20)*0.3;
+    const mv=(rng()-.495+trend)*14;
+    price=Math.max(1700,Math.min(2700,price+mv));
+    const rng2=rng(),rng3=rng(),wick=3+rng2*9;
+    const body=Math.abs(mv);
+    cs.push({t,o:+(price-mv/2).toFixed(2),
+      h:+(price+Math.max(wick,body/2)*(mv>0?rng3*0.4+0.6:rng3*0.6+0.2)).toFixed(2),
+      l:+(price-Math.max(wick,body/2)*(mv<0?rng3*0.4+0.6:rng3*0.6+0.2)).toFixed(2),
+      c:+price.toFixed(2),v:Math.floor(600+rng()*3000)});
+    t+=3600000;
+  }
+  return cs;
+}
 
-// ── STATS ──
+// ═══════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════
 function buildStats(trades){
   if(!trades.length)return null;
   const w=trades.filter(t=>t.win),l=trades.filter(t=>!t.win);
   const c4=trades.filter(t=>t.c4),nc4=trades.filter(t=>!t.c4);
   const N=trades.length;
-  let cum=0;const eq=trades.map(t=>({y:+(cum+=t.pnlUSD).toFixed(2)}));
-  // Monthly
+  let cum=0;const eq=trades.map(t=>+(cum+=t.pnlUSD).toFixed(2));
   const mo={};
-  trades.forEach(t=>{if(!mo[t.mo])mo[t.mo]={lb:t.moLabel,usd:0,n:0,w:0};mo[t.mo].usd+=t.pnlUSD;mo[t.mo].n++;if(t.win)mo[t.mo].w++;});
-  const moArr=Object.keys(mo).sort().map(k=>({lb:mo[k].lb,usd:+mo[k].usd.toFixed(2),n:mo[k].n,w:mo[k].w}));
-  // Result types
-  const RES=['SL_HIT','TRAIL_1:1','TRAIL_1:2','TRAIL_1:3','TRAIL_1:4','TRAIL_1:5','TIMEOUT'];
-  const byR=[];
-  const rCounts={};
-  trades.forEach(t=>{rCounts[t.res]=(rCounts[t.res]||0)+1;});
-  Object.keys(rCounts).sort().forEach(r=>byR.push({r,n:rCounts[r]}));
-  // Distribution buckets in USD
+  trades.forEach(t=>{if(!mo[t.mo])mo[t.mo]={lb:t.moLabel,usd:0,n:0,wn:0};mo[t.mo].usd+=t.pnlUSD;mo[t.mo].n++;if(t.win)mo[t.mo].wn++;});
+  const moArr=Object.keys(mo).sort().map(k=>({lb:mo[k].lb,usd:+mo[k].usd.toFixed(2),n:mo[k].n,wn:mo[k].wn}));
+  const rCnt={};trades.forEach(t=>{rCnt[t.result]=(rCnt[t.result]||0)+1;});
+  const byR=Object.keys(rCnt).sort().map(r=>({r,n:rCnt[r]}));
   const dpp=+document.getElementById('dpp').value;
-  const slUSD=+document.getElementById('slpts').value*dpp;
-  const BINS=[{lo:-Infinity,hi:-slUSD*1.5,lb:'Big loss'},{lo:-slUSD*1.5,hi:-slUSD*.5,lb:'Full SL'},
-    {lo:-slUSD*.5,hi:0,lb:'Small loss'},{lo:0,hi:slUSD,lb:'0→1R'},
-    {lo:slUSD,hi:slUSD*2,lb:'1R→2R'},{lo:slUSD*2,hi:slUSD*3,lb:'2R→3R'},{lo:slUSD*3,hi:Infinity,lb:'>3R'}];
+  const slU=+document.getElementById('slpts').value*dpp;
+  const BINS=[{lo:-Infinity,hi:-slU*1.1,lb:'Big L'},{lo:-slU*1.1,hi:-slU*0.1,lb:'Full SL'},
+    {lo:-slU*0.1,hi:slU*0.1,lb:'≈0'},{lo:slU*0.1,hi:slU*1.5,lb:'Partial'},
+    {lo:slU*1.5,hi:slU*2.5,lb:'1:2'},{lo:slU*2.5,hi:Infinity,lb:'1:3'}];
   const dist=BINS.map(b=>({lb:b.lb,n:trades.filter(t=>t.pnlUSD>b.lo&&t.pnlUSD<=b.hi).length,neg:b.hi<=0}));
-  // RR distribution
-  const rrBins=[1,2,3,4,5,6,7,8,9];
-  const rrDist=rrBins.map(r=>trades.filter(t=>Math.floor(t.mxRR)===r).length);
   const bN=trades.filter(t=>t.dir==='BUY').length,sN=trades.filter(t=>t.dir==='SELL').length;
   const bWR=bN?(100*trades.filter(t=>t.dir==='BUY'&&t.win).length/bN).toFixed(1):'0';
   const sWR=sN?(100*trades.filter(t=>t.dir==='SELL'&&t.win).length/sN).toFixed(1):'0';
@@ -350,103 +416,98 @@ function buildStats(trades){
   const avgL=l.length?+(l.reduce((s,t)=>s+t.pnlUSD,0)/l.length).toFixed(2):0;
   const best=+Math.max(...trades.map(t=>t.pnlUSD)).toFixed(2);
   const worst=+Math.min(...trades.map(t=>t.pnlUSD)).toFixed(2);
-  const maxDD=()=>{let peak=0,dd=0,cur=0;eq.forEach(p=>{cur=p.y;if(cur>peak)peak=cur;dd=Math.min(dd,cur-peak);});return +dd.toFixed(2);};
+  let peak=0,dd=0,cur2=0;eq.forEach(v=>{if(v>peak)peak=v;dd=Math.min(dd,v-peak);});
   return{N,w:w.length,l:l.length,wr:(100*w.length/N).toFixed(1),totalUSD,avgW,avgL,best,worst,
-    c4WR,nc4WR,c4n:c4.length,nc4n:nc4.length,bWR,sWR,bN,sN,maxDD:maxDD(),
-    eq,moArr,byR,dist,rrBins,rrDist};
+    c4WR,nc4WR,c4n:c4.length,nc4n:nc4.length,bWR,sWR,bN,sN,maxDD:+dd.toFixed(2),
+    eq,moArr,byR,dist};
 }
 
-// ── CHARTS ──
+// ═══════════════════════════════════════════════════
+// CHARTS
+// ═══════════════════════════════════════════════════
 const CH={};
 const GC='rgba(128,128,128,0.1)',TC='#888780';
 const BASE={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}};
+const fmt=v=>v>=0?`+$${Math.abs(v).toFixed(0)}`:`-$${Math.abs(v).toFixed(0)}`;
 function dc(id){if(CH[id]){CH[id].destroy();delete CH[id];}}
-const fmt=v=>v>=0?`+$${v.toFixed(0)}`:`-$${Math.abs(v).toFixed(0)}`;
 
-function drawAll(st){
+function drawAllCharts(st){
   // Equity
   dc('eq');
-  CH.eq=new Chart(document.getElementById('c-eq'),{type:'line',data:{labels:st.eq.map((_,i)=>i+1),
-    datasets:[{data:st.eq.map(p=>p.y),borderColor:st.totalUSD>=0?'#1D9E75':'#D85A30',
-      backgroundColor:'rgba(55,138,221,0.05)',fill:true,tension:.35,pointRadius:0,borderWidth:1.5}]},
-    options:{...BASE,scales:{x:{display:false},y:{ticks:{color:TC,callback:v=>fmt(v)},grid:{color:GC}}}}});
+  CH.eq=new Chart(document.getElementById('c-eq'),{type:'line',
+    data:{labels:st.eq.map((_,i)=>i+1),datasets:[{data:st.eq,
+      borderColor:st.totalUSD>=0?'#1D9E75':'#D85A30',
+      backgroundColor:st.totalUSD>=0?'rgba(29,158,117,.06)':'rgba(216,90,48,.06)',
+      fill:true,tension:.35,pointRadius:0,borderWidth:1.5}]},
+    options:{...BASE,scales:{x:{display:false},y:{ticks:{color:TC,callback:v=>fmt(v)},grid:{color:GC}}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`Trade #${c.dataIndex+1}: ${fmt(c.raw)}`}}}}});
   // Donut
   dc('do');
-  const RCOL={'SL_HIT':'#D85A30','TRAIL_1:1':'#F5A623','TRAIL_1:2':'#378ADD','TRAIL_1:3':'#1D9E75',
-    'TRAIL_1:4':'#639922','TRAIL_1:5':'#2E7D32','TIMEOUT':'#888780'};
-  const dlEl=document.getElementById('dl');
-  dlEl.innerHTML=st.byR.filter(r=>r.n>0).map(r=>`<span class="li"><span class="ls" style="background:${RCOL[r.r]||'#aaa'}"></span>${r.r.replace('_',' ')} (${r.n})</span>`).join('');
+  const RCOL={'SL_HIT':'#D85A30','TRAIL_BE':'#F5A623','TRAIL_1:1':'#378ADD','TP3_1:3':'#1D9E75','TIMEOUT':'#888780'};
+  document.getElementById('dl').innerHTML=st.byR.filter(r=>r.n>0).map(r=>`<span class="li"><span class="ls" style="background:${RCOL[r.r]||'#aaa'}"></span>${r.r.replace('_',' ')} (${r.n})</span>`).join('');
   CH.do=new Chart(document.getElementById('c-do'),{type:'doughnut',
     data:{labels:st.byR.map(r=>r.r),datasets:[{data:st.byR.map(r=>r.n),backgroundColor:st.byR.map(r=>RCOL[r.r]||'#aaa'),borderWidth:0}]},
-    options:{...BASE,cutout:'62%'}});
-  // Win rate stacked
+    options:{...BASE,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw}`}}}}});
+  // Win rate
   dc('wr');
-  const wrLabels=['All',st.c4WR!=null?'4H ✓':null,st.nc4WR!=null?'No 4H':null,'BUY','SELL'].filter(Boolean);
-  const wrVals=[+st.wr,st.c4WR!=null?+st.c4WR:null,st.nc4WR!=null?+st.nc4WR:null,+st.bWR,+st.sWR].filter(v=>v!=null);
+  const labs=['All trades',st.c4WR!=null?'4H Confirmed':null,st.nc4WR!=null?'No 4H':null,'BUY','SELL'].filter(Boolean);
+  const vals=[+st.wr,st.c4WR!=null?+st.c4WR:null,st.nc4WR!=null?+st.nc4WR:null,+st.bWR,+st.sWR].filter(v=>v!=null);
   CH.wr=new Chart(document.getElementById('c-wr'),{type:'bar',
-    data:{labels:wrLabels,datasets:[{label:'Win%',data:wrVals,backgroundColor:'#1D9E75',borderRadius:3,stack:'s'},
-      {label:'Loss%',data:wrVals.map(v=>(100-v).toFixed(1)),backgroundColor:'#D85A30',borderRadius:3,stack:'s'}]},
+    data:{labels:labs,datasets:[{label:'Win%',data:vals,backgroundColor:'#1D9E75',borderRadius:3,stack:'s'},
+      {label:'Loss%',data:vals.map(v=>(100-v).toFixed(1)),backgroundColor:'#D85A30',borderRadius:3,stack:'s'}]},
     options:{...BASE,scales:{x:{stacked:true,ticks:{color:TC,font:{size:10}},grid:{display:false}},
       y:{stacked:true,max:100,ticks:{color:TC,callback:v=>v+'%'},grid:{color:GC}}}}});
   // Monthly bar
   dc('mo');
   CH.mo=new Chart(document.getElementById('c-mo'),{type:'bar',
-    data:{labels:st.moArr.map(m=>m.lb),datasets:[{data:st.moArr.map(m=>m.usd),
-      backgroundColor:st.moArr.map(m=>m.usd>=0?'rgba(29,158,117,.75)':'rgba(216,90,48,.75)'),borderRadius:3}]},
-    options:{...BASE,scales:{x:{ticks:{color:TC,font:{size:9}},grid:{display:false}},
-      y:{ticks:{color:TC,callback:v=>fmt(v)},grid:{color:GC}}}}});
-  // PnL dist
+    data:{labels:st.moArr.map(m=>m.lb),datasets:[{data:st.moArr.map(m=>m.usd),backgroundColor:st.moArr.map(m=>m.usd>=0?'rgba(29,158,117,.75)':'rgba(216,90,48,.75)'),borderRadius:3}]},
+    options:{...BASE,scales:{x:{ticks:{color:TC,font:{size:9}},grid:{display:false}},y:{ticks:{color:TC,callback:v=>fmt(v)},grid:{color:GC}}}}});
+  // Dist
   dc('dist');
   CH.dist=new Chart(document.getElementById('c-dist'),{type:'bar',
-    data:{labels:st.dist.map(d=>d.lb),datasets:[{data:st.dist.map(d=>d.n),
-      backgroundColor:st.dist.map(d=>d.neg?'rgba(216,90,48,.7)':'rgba(29,158,117,.7)'),borderRadius:3}]},
-    options:{...BASE,scales:{x:{ticks:{color:TC,font:{size:9}},grid:{display:false}},
-      y:{ticks:{color:TC},grid:{color:GC}}}}});
-  // BUY vs SELL
+    data:{labels:st.dist.map(d=>d.lb),datasets:[{data:st.dist.map(d=>d.n),backgroundColor:st.dist.map(d=>d.neg?'rgba(216,90,48,.7)':'rgba(29,158,117,.7)'),borderRadius:3}]},
+    options:{...BASE,scales:{x:{ticks:{color:TC,font:{size:9}},grid:{display:false}},y:{ticks:{color:TC},grid:{color:GC}}}}});
+  // Dir
   dc('dir');
   CH.dir=new Chart(document.getElementById('c-dir'),{type:'bar',
-    data:{labels:[`BUY (${st.bN})`,`SELL (${st.sN})`],
-      datasets:[{data:[+st.bWR,+st.sWR],backgroundColor:['#378ADD','#D85A30'],borderRadius:4}]},
+    data:{labels:[`BUY (${st.bN})`,`SELL (${st.sN})`],datasets:[{data:[+st.bWR,+st.sWR],backgroundColor:['#378ADD','#D85A30'],borderRadius:4}]},
     options:{...BASE,scales:{x:{ticks:{color:TC},grid:{display:false}},y:{max:100,ticks:{color:TC,callback:v=>v+'%'},grid:{color:GC}}}}});
-  // RR dist
-  dc('rr');
-  CH.rr=new Chart(document.getElementById('c-rr'),{type:'bar',
-    data:{labels:st.rrBins.map(r=>`1:${r}`),datasets:[{data:st.rrDist,
-      backgroundColor:'rgba(55,138,221,.7)',borderRadius:3}]},
-    options:{...BASE,scales:{x:{ticks:{color:TC,font:{size:10}},grid:{display:false}},y:{ticks:{color:TC},grid:{color:GC}}}}});
+  // Result revenue
+  dc('rres');
+  const rrData=st.byR.map(r=>({r:r.r,n:r.n,col:RCOL[r.r]||'#aaa'}));
+  CH.rres=new Chart(document.getElementById('c-rres'),{type:'bar',
+    data:{labels:rrData.map(r=>r.r.replace('_',' ')),datasets:[{data:rrData.map(r=>r.n),backgroundColor:rrData.map(r=>r.col),borderRadius:4}]},
+    options:{...BASE,scales:{x:{ticks:{color:TC,font:{size:9}},grid:{display:false}},y:{ticks:{color:TC},grid:{color:GC}}}}});
 }
 
-function renderMetrics(st,acct){
+function renderMG(st,acct){
   const roi=(100*st.totalUSD/acct).toFixed(2);
+  const profMo=st.moArr.filter(m=>m.usd>0).length,lossMo=st.moArr.filter(m=>m.usd<0).length;
   const cards=[
     {lb:'Total trades',val:st.N,cls:'b'},
     {lb:'Win rate',val:st.wr+'%',cls:+st.wr>=50?'g':'r'},
     {lb:'4H confirmed WR',val:st.c4WR!=null?st.c4WR+'%':'—',cls:'g'},
-    {lb:'Total P&L ($)',val:(st.totalUSD>=0?'+$':'-$')+Math.abs(st.totalUSD).toFixed(0),cls:st.totalUSD>=0?'g':'r'},
-    {lb:'ROI on account',val:(roi>=0?'+':'')+roi+'%',cls:+roi>=0?'g':'r'},
+    {lb:'Total P&L ($)',val:fmt(st.totalUSD),cls:st.totalUSD>=0?'g':'r'},
+    {lb:'ROI on $'+acct.toLocaleString(),val:(roi>=0?'+':'')+roi+'%',cls:+roi>=0?'g':'r'},
     {lb:'Max drawdown',val:'-$'+Math.abs(st.maxDD).toFixed(0),cls:'r'},
     {lb:'Avg win ($)',val:'+$'+st.avgW.toFixed(0),cls:'g'},
     {lb:'Avg loss ($)',val:'-$'+Math.abs(st.avgL).toFixed(0),cls:'r'},
-    {lb:'Best trade',val:'+$'+st.best.toFixed(0),cls:'g'},
-    {lb:'Worst trade',val:'-$'+Math.abs(st.worst).toFixed(0),cls:'r'},
+    {lb:'Profitable months',val:profMo+' / '+st.moArr.length,cls:'g'},
+    {lb:'Losing months',val:lossMo+' / '+st.moArr.length,cls:'r'},
   ];
-  document.getElementById('mgrid').innerHTML=cards.map(c=>`<div class="mc"><div class="ml">${c.lb}</div><div class="mv ${c.cls} ${String(c.val).length>6?'sm':''}">${c.val}</div></div>`).join('');
+  document.getElementById('mgrid').innerHTML=cards.map(c=>`<div class="mc"><div class="ml">${c.lb}</div><div class="mv ${c.cls} ${String(c.val).length>7?'sm':''}">${c.val}</div></div>`).join('');
   const imp=st.c4WR&&st.nc4WR?(+st.c4WR-+st.nc4WR).toFixed(1):null;
   document.getElementById('ins').innerHTML=imp?
-    `<strong>Key insight:</strong> 4H confirmation boosts win rate from <strong>${st.nc4WR}%</strong> → <strong>${st.c4WR}%</strong> (<strong>+${imp}% edge</strong>). Only trade when 4H candle also closes above/below VWAP & EMA9.`:
-    `<strong>Tip:</strong> Run a wider date range (6M+) to see the 4H confirmation edge clearly.`;
+    `<strong>Edge insight:</strong> 4H confirmation boosts win rate <strong>${st.nc4WR}% → ${st.c4WR}%</strong> (+${imp}% edge). Only trade when 4H candle trend aligns.`:
+    `<strong>Tip:</strong> Run 6M or 1Y for more trades and a clearer 4H confirmation edge comparison.`;
 }
-
 function renderMonthly(moArr){
-  document.getElementById('mo-grid').innerHTML=moArr.map(m=>`
-    <div class="mo-card ${m.usd>=0?'profit':'loss'}">
-      <div class="mo-name">${m.lb}</div>
-      <div class="mo-usd">${m.usd>=0?'+$':'-$'}${Math.abs(m.usd).toFixed(0)}</div>
-      <div class="mo-meta">${m.w}W / ${m.n-m.w}L</div>
-    </div>`).join('');
+  document.getElementById('mo-grid').innerHTML=moArr.map(m=>{
+    const cls=m.usd>0?'profit':m.usd<0?'loss':'even';
+    return`<div class="mo-card ${cls}"><div class="mo-name">${m.lb}</div><div class="mo-usd">${m.usd>0?'+$':m.usd<0?'-$':'$'}${Math.abs(m.usd).toFixed(0)}</div><div class="mo-meta">${m.wn}W / ${m.n-m.wn}L</div></div>`;
+  }).join('');
 }
-
-const RC={'SL_HIT':'bl','TRAIL_1:1':'bn','TRAIL_1:2':'bw','TRAIL_1:3':'bw','TRAIL_1:4':'bw','TRAIL_1:5':'bw','TIMEOUT':'bn'};
+const RCLS={'SL_HIT':'bl','TRAIL_BE':'bn','TRAIL_1:1':'bw','TP3_1:3':'bw','TIMEOUT':'bn'};
 function renderTable(trades){
   const dpp=+document.getElementById('dpp').value;
   const slPts=+document.getElementById('slpts').value;
@@ -454,22 +515,34 @@ function renderTable(trades){
   document.getElementById('tb').innerHTML=trades.map((t,i)=>`<tr>
     <td style="color:var(--color-text-secondary)">${i+1}</td>
     <td>${t.date}</td>
-    <td><span class="bx ${t.dir==='BUY'?'bb':'bs'}">${t.dir}</span></td>
-    <td>${t.en}</td>
-    <td style="color:#D85A30">$${(slPts*dpp).toFixed(0)}</td>
-    <td style="color:#185FA5">$${(slPts*2*dpp).toFixed(0)}</td>
-    <td style="color:#1D9E75">$${(slPts*3*dpp).toFixed(0)}</td>
+    <td><span class="bx ${t.strat==='FIB 0.618'?'bfib':'bn'}">${t.strat}</span></td>
+    <td><span class="bx ${t.dir==='BUY'?'bb':'bsl'}">${t.dir}</span></td>
+    <td>${t.entry}</td>
+    <td style="color:#D85A30">${t.sl} <span style="color:var(--color-text-secondary)">(-$${(slPts*dpp).toFixed(0)})</span></td>
+    <td style="color:#888780">+$${(slPts*dpp).toFixed(0)}</td>
+    <td style="color:#185FA5">+$${(slPts*2*dpp).toFixed(0)}</td>
+    <td style="color:#1D9E75">+$${(slPts*3*dpp).toFixed(0)}</td>
     <td>${t.ex}</td>
     <td style="color:${t.pnlPts>=0?'#1D9E75':'#D85A30'}">${t.pnlPts>=0?'+':''}${t.pnlPts.toFixed(1)}</td>
     <td style="color:${t.pnlUSD>=0?'#1D9E75':'#D85A30'};font-weight:600">${t.pnlUSD>=0?'+$':'-$'}${Math.abs(t.pnlUSD).toFixed(0)}</td>
     <td style="color:var(--color-text-secondary)">${t.rr}</td>
-    <td><span class="bx ${RC[t.res]||'bn'}">${t.res.replace(/_/g,' ')}</span></td>
+    <td><span class="bx ${RCLS[t.result]||'bn'}">${t.result.replace('_',' ')}</span></td>
     <td><span class="bx ${t.c4?'bc':'bn'}">${t.c4?'✓':'—'}</span></td>
   </tr>`).join('');
 }
 
-// ── PERIOD BUTTONS ──
-let selP='6m';
+// ═══════════════════════════════════════════════════
+// UI WIRING
+// ═══════════════════════════════════════════════════
+let selStrat='vwap_ema9',selP='6m';
+document.querySelectorAll('.strat-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.strat-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');selStrat=b.dataset.s;
+    document.getElementById('rule-vwap').style.display=selStrat==='vwap_ema9'?'':'none';
+    document.getElementById('rule-fib').style.display=selStrat==='fib618'?'':'none';
+  });
+});
 document.querySelectorAll('.pb').forEach(b=>{
   b.addEventListener('click',()=>{
     document.querySelectorAll('.pb').forEach(x=>x.classList.remove('active'));
@@ -477,13 +550,10 @@ document.querySelectorAll('.pb').forEach(b=>{
     document.getElementById('cdt').style.display=selP==='custom'?'flex':'none';
   });
 });
-// Default dates
 const now=new Date();
 document.getElementById('dto').value=now.toISOString().slice(0,10);
-const ago=new Date(now-180*86400000);
-document.getElementById('dfr').value=ago.toISOString().slice(0,10);
+document.getElementById('dfr').value=new Date(now-180*86400000).toISOString().slice(0,10);
 
-// ── RUN ──
 document.getElementById('run-btn').addEventListener('click',async()=>{
   const btn=document.getElementById('run-btn');
   const stEl=document.getElementById('stbar');
@@ -500,24 +570,25 @@ document.getElementById('run-btn').addEventListener('click',async()=>{
   const acct=+document.getElementById('acct').value;
   const dpp=+document.getElementById('dpp').value;
   const slPts=+document.getElementById('slpts').value;
-  stEl.textContent='⟳ Fetching XAUUSD data…';stEl.className='sb ld';
+  stEl.textContent='⟳ Fetching XAUUSD 1H data from Yahoo Finance…';stEl.className='sb ld';
   try{
     const{cs,src}=await fetchData('GC=F',s,e);
-    stEl.textContent=`⟳ Running backtest on ${cs.length} candles…`;
+    const stratName=selStrat==='vwap_ema9'?'VWAP+EMA9':'Fibonacci 0.618';
+    stEl.textContent=`⟳ Running ${stratName} on ${cs.length} candles…`;
     await new Promise(r=>setTimeout(r,30));
-    const P={ep:9,slPts,r1:2,r2:3,lf:40,dpp};
-    const trades=runVwapEma9(cs,P);
+    let trades;
+    if(selStrat==='vwap_ema9') trades=runVwapEma9(cs,slPts,dpp);
+    else trades=runFib618(cs,slPts,dpp);
     const st=buildStats(trades);
-    if(!st){stEl.textContent='⚠ No trades found — try a wider range.';stEl.className='sb er';btn.disabled=false;btn.textContent='▶ Run Backtest';return;}
+    if(!st||st.N===0){stEl.textContent='⚠ No trades found — try a wider date range (6M or 1Y).';stEl.className='sb er';btn.disabled=false;btn.textContent='▶ Run Backtest';return;}
     document.getElementById('res').style.display='block';
-    renderMetrics(st,acct);
-    renderMonthly(st.moArr);
-    drawAll(st);
-    renderTable(trades);
+    renderMG(st,acct);renderMonthly(st.moArr);drawAllCharts(st);renderTable(trades);
     const fd=new Date(s).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
     const td=new Date(e).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-    stEl.textContent=`✓ ${trades.length} trades | ${src} | ${fd} – ${td}`;stEl.className='sb ok';
+    stEl.textContent=`✅ ${stratName}: ${trades.length} trades | ${src} | ${fd} – ${td}`;stEl.className='sb ok';
   }catch(err){stEl.textContent=`✗ Error: ${err.message}`;stEl.className='sb er';}
   btn.disabled=false;btn.textContent='▶ Run Backtest';
 });
 </script>
+</body>
+</html>
